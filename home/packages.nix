@@ -10,6 +10,7 @@ let
   non-graphical-packages = with pkgs; [
     emacs
     coreutils-full
+    nil
     unzip
     zip
   ];

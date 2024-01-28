@@ -1,4 +1,4 @@
-{ nixos-wsl, pkgs, ... }:
+{ nixos-wsl, pkgs, local-config, ... }:
 {
   fonts.packages = with pkgs; [
     noto-fonts
@@ -13,4 +13,6 @@
     package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
   };
+
+  nixpkgs.config.allowUnfree = local-config.allowUnfree;
 }

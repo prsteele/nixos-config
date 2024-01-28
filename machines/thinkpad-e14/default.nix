@@ -1,13 +1,18 @@
-{ user, }:
+{ local-config, pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
   ];
 
-  users.users.prsteele = {
+  users.users.${local-config.user} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkManager" ];
   };
+
+  environment.systemPackages = with pkgs; [
+    bluez
+    bluez
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
