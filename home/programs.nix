@@ -14,6 +14,8 @@
     };
   };
 
+  programs.home-manager.enable = true;
+
   programs.tmux = {
     enable = true;
     prefix = "C-u";
@@ -37,8 +39,8 @@
       unsetopt BEEP
       set bell-style none
 
-      if [ -f ~/.zsh-ad-hoc ]; then
-          . ~/.zsh-ad-hoc
+      if [ -f ~/.zshrc-ad-hoc ]; then
+          . ~/.zshrc-ad-hoc
       fi
     '';
   };

@@ -1,17 +1,17 @@
-{ ... }:
+{ user, ... }:
 {
-  home.username = "nixos";
-  home.homeDirectory = "/home/nixos";
+  imports = [
+    ./packages.nix
+    ./programs.nix
+  ];
+
+  home.username = user;
+  home.homeDirectory = "/home/${user}";
 
   home.sessionVariables = {
     EDITOR = "emacs";
     VISUAL = "emacs";
   };
-
-  imports = [
-    ./packages.nix
-    ./programs.nix
-  ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -24,5 +24,4 @@
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
   home.stateVersion = "23.11"; # Please read the comment before changing.
-
 }
