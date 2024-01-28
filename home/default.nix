@@ -1,12 +1,12 @@
-{ user, ... }:
+{ local-config, ... }:
 {
   imports = [
     ./packages.nix
     ./programs.nix
   ];
 
-  home.username = user;
-  home.homeDirectory = "/home/${user}";
+  home.username = local-config.user;
+  home.homeDirectory = "/home/${local-config.user}";
 
   home.sessionVariables = {
     EDITOR = "emacs";

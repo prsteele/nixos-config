@@ -14,8 +14,6 @@
     };
   };
 
-  programs.home-manager.enable = true;
-
   programs.tmux = {
     enable = true;
     prefix = "C-u";

@@ -16,16 +16,18 @@
       nixosConfigurations.nixos =
         let
           user = "nixos";
+          specialArgs = inputs // (import ./machines/wsl/config.nix);
         in
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = inputs // { inherit user; };
+          specialArgs = specialArgs;
           modules = [
-            ./machines/wsl.nix
+            ./machines/wsl
             ./system
             home-manager.nixosModules.default
             (args: {
               home-manager.useGlobalPkgs = true;
+              home-manager.extraSpecialArgs = specialArgs;
               home-manager.users.${user} = import ./home args;
             })
           ];
@@ -33,7 +35,7 @@
 
       homeConfigurations.nixos = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
-        extraSpecialArgs = { user = "nixos"; };
+        extraSpecialArgs = (inputs // import ./machines/wsl/config.nix);
         modules = [ ./home ];
       };
 
