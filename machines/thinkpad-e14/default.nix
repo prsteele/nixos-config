@@ -11,7 +11,6 @@
 
   environment.systemPackages = with pkgs; [
     bluez
-    bluez
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -29,7 +28,28 @@
 
   time.timeZone = "US/Eastern";
 
+  security.rtkit.enable = true;
+
+  environment.etc = {
+    "wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = ''
+      		bluez_monitor.properties = {
+      			["bluez5.enable-sbc-xq"] = true,
+      			["bluez5.enable-msbc"] = true,
+      			["bluez5.enable-hw-volume"] = true,
+      			["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
+      		}
+      	'';
+  };
+
+  services.blueman.enable = false;
   services.openssh.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+  services.pipewire.audio.enable = true;
   services.printing.enable = true;
   services.xserver.enable = true;
   services.xserver.layout = "us";
@@ -39,8 +59,15 @@
 
   sound.enable = true;
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  # hardware.bluetooth.settings = {
+  #   General = {
+  #     Enable = "Source,Sink,Media,Socket";
+  #     Experimental = false;
+  #   };
+  # };
   hardware.pulseaudio = {
-    enable = true;
+    enable = false;
     # NixOS allows either a lightweight build (default) or full build of PulseAudio to be installed.
     # Only the full build has Bluetooth support, so it must be selected here.
     package = pkgs.pulseaudioFull;
