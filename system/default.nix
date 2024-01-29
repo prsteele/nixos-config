@@ -1,4 +1,4 @@
-{ nixos-wsl, pkgs, local-config, ... }:
+{ pkgs, local-config, ... }:
 {
   fonts.packages = with pkgs; [
     noto-fonts

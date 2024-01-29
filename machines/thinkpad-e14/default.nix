@@ -1,4 +1,4 @@
-{ local-config, pkgs, ... }:
+{ local-config, pkgs, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -17,14 +17,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.networkmanager.enable = true;
-  networking.wireless.enable = false; # Enables wireless support via wpa_supplicant.
-  networking.useDHCP = false;
-  networking.interfaces.enp4s0.useDHCP = true;
-  networking.interfaces.wlp5s0.useDHCP = true;
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  networking.interfaces.enp4s0.useDHCP = lib.mkDefault true;
+  networking.interfaces.wlp5s0.useDHCP = lib.mkDefault true;
+  networking.wireless.enable = false;
 
   time.timeZone = "US/Eastern";
 
