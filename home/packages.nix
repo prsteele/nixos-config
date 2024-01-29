@@ -16,6 +16,8 @@ let
       inkscape
       ksshaskpass
       nixpkgs-fmt
+      pavucontrol
+      pwvucontrol
       yakuake
       protonvpn-gui
     ]
