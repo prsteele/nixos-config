@@ -24,14 +24,15 @@ let
     else [ ];
 
   non-graphical-packages = with pkgs; [
-    emacs
     coreutils-full
+    emacs
     htop
     ispell
     jq
     nil
     nixpkgs-fmt
     protonvpn-cli
+    tree
     unzip
     zip
   ];
