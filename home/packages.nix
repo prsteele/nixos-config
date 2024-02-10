@@ -35,6 +35,7 @@ let
     tree
     unzip
     zip
+    curl
   ];
 in
 {
