@@ -32,13 +32,6 @@
           ];
         };
 
-      mkHome = cfg:
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${cfg.local-config.system};
-          extraSpecialArgs = (inputs // cfg);
-          modules = [ ./home ];
-        };
-
       configs = {
         wsl = {
           local-config = {
@@ -61,11 +54,10 @@
 
     in
     {
-      # WSL
-      nixosConfigurations.nixos = mkNixos configs.wsl ./machines/wsl;
-
-      # Thinkpad
-      nixosConfigurations.thinkpad = mkNixos configs.thinkpad ./machines/thinkpad-e14;
+      nixosConfigurations = {
+        wsl = mkNixos configs.wsl ./machines/wsl;
+        thinkpad = mkNixos configs.thinkpad ./machines/thinkpad-e14;
+      };
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
     };
