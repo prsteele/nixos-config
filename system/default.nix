@@ -15,4 +15,8 @@
   };
 
   nixpkgs.config.allowUnfree = local-config.allowUnfree;
+
+  programs.zsh.enable = true;
+
+  users.users.${local-config.user}.shell = pkgs.zsh;
 }
