@@ -2,12 +2,20 @@
   description = "NixOS";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
-    nixos-wsl.url = "github:nix-community/nixos-wsl";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    nixos-wsl = {
+      url = "github:nix-community/nixos-wsl";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
 
@@ -22,6 +30,7 @@
           specialArgs = specialArgs;
           modules = [
             machine
+            ./overlays
             ./system
             home-manager.nixosModules.default
             (args: {
