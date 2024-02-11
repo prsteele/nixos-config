@@ -4,7 +4,7 @@
   home-manager.users.${config.defaultUser} =
     {
       imports = [
-        ./packages.nix
+        ./packages
         ./programs.nix
       ];
 

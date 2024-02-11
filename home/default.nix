@@ -1,5 +1,5 @@
-extraSpecialArgs:
-{ config, home-manager, ... }:
+{ home-manager }:
+{ config, ... }:
 {
 
   imports = [
@@ -7,6 +7,6 @@ extraSpecialArgs:
     ./home.nix
   ];
 
+  home-manager.extraSpecialArgs = { nixos-config = config; };
 
-  home-manager.extraSpecialArgs = extraSpecialArgs // { nixos-config = config; };
 }

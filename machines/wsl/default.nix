@@ -1,4 +1,5 @@
-{ nixos-wsl, config, ... }:
+{ nixos-wsl }:
+{ config, ... }:
 {
   defaultUser = "nixos";
   graphicalSystem = true;
@@ -15,6 +16,7 @@
 
   wsl.enable = true;
   wsl.defaultUser = config.defaultUser;
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

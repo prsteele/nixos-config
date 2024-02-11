@@ -1,3 +1,4 @@
+{ nixos-generators }:
 { modulesPath, config, ... }:
 {
   defaultUser = "prsteele";
@@ -6,7 +7,13 @@
 
   imports = [
     (modulesPath + "/virtualisation/amazon-image.nix")
+    nixos-generators.nixosModules.all-formats
   ];
+
+  # We need more temp space to build
+  formatConfigs.amazon = { ... }: {
+    amazonImage.sizeMB = 16 * 1024;
+  };
 
   users.users.${config.defaultUser} = {
     isNormalUser = true;
