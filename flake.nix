@@ -2,70 +2,93 @@
   description = "NixOS";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
-    nixos-wsl.url = "github:nix-community/nixos-wsl";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    nixos-wsl = {
+      url = "github:nix-community/nixos-wsl";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , home-manager
+    , nixos-generators
+    , nixos-wsl
+    , ...
+    }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
-
-      mkNixos = cfg: machine:
+    in
+    {
+      nixosModules =
         let
-          # Propagate local-config (the only attribute of cfg) to
-          # NixOS and HM modules
-          specialArgs = inputs // cfg;
+          # Since we define machine configuration as modules, we need to
+          # plumb flake inputs manually
+          modules = ./modules;
+          overlays = import ./overlays { inherit nixpkgs-unstable; };
+          system = import ./system { inherit nixos-generators; };
+          home = import ./home { inherit home-manager; };
         in
-        nixpkgs.lib.nixosSystem {
-          system = cfg.local-config.system;
-          specialArgs = specialArgs;
-          modules = [
-            machine
-            ./system
-            home-manager.nixosModules.default
-            (args: {
-              home-manager.useGlobalPkgs = true;
-              home-manager.extraSpecialArgs = specialArgs;
-              home-manager.users.${specialArgs.local-config.user} = import ./home args;
-            })
-          ];
-        };
+        {
+          base = {
+            imports = [
+              modules
+              overlays
+              system
+              home
+            ];
+          };
 
-      mkHome = cfg:
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${cfg.local-config.system};
-          extraSpecialArgs = (inputs // cfg);
-          modules = [ ./home ];
-        };
+          wsl = {
+            imports = [
+              (import ./machines/wsl { inherit nixos-wsl; })
+              self.nixosModules.base
+            ];
+          };
 
-      configs = {
-        wsl = {
-          local-config = {
-            user = "nixos";
-            graphical = true;
-            allowUnfree = true;
-            system = "x86_64-linux";
+          thinkpad = {
+            imports = [
+              ./machines/thinkpad-e14
+              self.nixosModules.base
+            ];
+          };
+
+          aws = {
+            imports = [
+              ./machines/aws
+              self.nixosModules.base
+            ];
           };
         };
 
-        thinkpad = {
-          local-config = {
-            user = "prsteele";
-            graphical = true;
-            allowUnfree = true;
-            system = "x86_64-linux";
-          };
+      nixosConfigurations = {
+        wsl = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [ self.nixosModules.wsl ];
+        };
+        thinkpad = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [ self.nixosModules.thinkpad ];
+        };
+        aws = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [ self.nixosModules.aws ];
         };
       };
 
-    in
-    {
-      # WSL
-      nixosConfigurations.nixos = mkNixos configs.wsl ./machines/wsl;
-
-      # Thinkpad
-      nixosConfigurations.thinkpad = mkNixos configs.thinkpad ./machines/thinkpad-e14;
+      packages = forAllSystems (system:
+        {
+          aws-ami = self.nixosConfigurations.aws.config.formats.amazon;
+        }
+      );
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
     };

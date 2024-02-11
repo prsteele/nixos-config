@@ -1,12 +1,16 @@
-{ local-config, pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
+  defaultUser = "prsteele";
+  graphicalSystem = true;
+  desktopSystem = true;
+  nixpkgs.config.allowUnfree = true;
+
   imports = [
     ./hardware-configuration.nix
   ];
 
-  users.users.${local-config.user} = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkManager" ];
+  users.users.${config.defaultUser} = {
+    extraGroups = [ "networkManager" ];
   };
 
   environment.systemPackages = with pkgs; [

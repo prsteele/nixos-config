@@ -1,17 +1,18 @@
-{ nixos-wsl }:
-{ config, ... }:
+{ modulesPath, ... }:
 {
-  defaultUser = "nixos";
-  graphicalSystem = true;
-  desktopSystem = true;
+  defaultUser = "prsteele";
+  graphicalSystem = false;
+  desktopSystem = false;
   nixpkgs.config.allowUnfree = true;
 
   imports = [
-    nixos-wsl.nixosModules.wsl
+    (modulesPath + "/virtualisation/amazon-image.nix")
   ];
 
-  wsl.enable = true;
-  wsl.defaultUser = config.defaultUser;
+  # We need more temp space to build
+  formatConfigs.amazon = { ... }: {
+    amazonImage.sizeMB = 16 * 1024;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

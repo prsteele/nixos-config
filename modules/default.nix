@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./machine-config.nix
+  ];
+}

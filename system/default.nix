@@ -1,5 +1,9 @@
-{ pkgs, local-config, ... }:
+{ nixos-generators }:
+{ lib, pkgs, config, ... }:
 {
+  imports = [
+    nixos-generators.nixosModules.all-formats
+  ];
   fonts.packages = with pkgs; [
     noto-fonts
   ];
@@ -9,14 +13,22 @@
     wget
   ];
 
+  networking.enableIPv6 = true;
+  networking.defaultGateway6 = {
+    address = "fe80::1";
+    interface = "eth0";
+  };
+
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
   };
 
-  nixpkgs.config.allowUnfree = local-config.allowUnfree;
-
   programs.zsh.enable = true;
 
-  users.users.${local-config.user}.shell = pkgs.zsh;
+  users.users.${config.defaultUser} = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    shell = pkgs.zsh;
+  };
 }
