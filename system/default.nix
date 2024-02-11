@@ -1,5 +1,9 @@
-{ pkgs, config, ... }:
+{ nixos-generators }:
+{ lib, pkgs, config, ... }:
 {
+  imports = [
+    nixos-generators.nixosModules.all-formats
+  ];
   fonts.packages = with pkgs; [
     noto-fonts
   ];
@@ -22,5 +26,9 @@
 
   programs.zsh.enable = true;
 
-  users.users.${config.defaultUser}.shell = pkgs.zsh;
+  users.users.${config.defaultUser} = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    shell = pkgs.zsh;
+  };
 }

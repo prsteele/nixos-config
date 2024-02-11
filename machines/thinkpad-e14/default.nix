@@ -2,6 +2,7 @@
 {
   defaultUser = "prsteele";
   graphicalSystem = true;
+  desktopSystem = true;
   nixpkgs.config.allowUnfree = true;
 
   imports = [
@@ -9,8 +10,7 @@
   ];
 
   users.users.${config.defaultUser} = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkManager" ];
+    extraGroups = [ "networkManager" ];
   };
 
   environment.systemPackages = with pkgs; [

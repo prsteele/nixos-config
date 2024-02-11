@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
+    awscli2
     coreutils-full
     emacs
     htop
@@ -8,7 +9,6 @@
     jq
     nil
     nixpkgs-fmt
-    protonvpn-cli
     tree
     unzip
     zip

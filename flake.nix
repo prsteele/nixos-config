@@ -34,37 +34,37 @@
           # plumb flake inputs manually
           modules = ./modules;
           overlays = import ./overlays { inherit nixpkgs-unstable; };
-          system = ./system;
+          system = import ./system { inherit nixos-generators; };
           home = import ./home { inherit home-manager; };
         in
         {
-          wsl = {
+          base = {
             imports = [
-              (import ./machines/wsl { inherit nixos-wsl; })
               modules
               overlays
               system
               home
+            ];
+          };
+
+          wsl = {
+            imports = [
+              (import ./machines/wsl { inherit nixos-wsl; })
+              self.nixosModules.base
             ];
           };
 
           thinkpad = {
             imports = [
               ./machines/thinkpad-e14
-              modules
-              overlays
-              system
-              home
+              self.nixosModules.base
             ];
           };
 
           aws = {
             imports = [
-              (import ./machines/aws { inherit nixos-generators; })
-              modules
-              overlays
-              system
-              home
+              ./machines/aws
+              self.nixosModules.base
             ];
           };
         };

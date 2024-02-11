@@ -3,9 +3,8 @@ let
   graphical = nixos-config.graphicalSystem;
 in
 {
-  home.packages = lib.mkIf graphical
-    (with pkgs;
-    [
+  home.packages = lib.mkIf graphical (
+    with pkgs; [
       firefox
       inkscape
       ksshaskpass
@@ -14,5 +13,6 @@ in
       pwvucontrol
       yakuake
       protonvpn-gui
-    ]);
+    ]
+  );
 }

@@ -1,23 +1,17 @@
-{ nixos-generators }:
-{ modulesPath, config, ... }:
+{ modulesPath, ... }:
 {
   defaultUser = "prsteele";
   graphicalSystem = false;
+  desktopSystem = false;
   nixpkgs.config.allowUnfree = true;
 
   imports = [
     (modulesPath + "/virtualisation/amazon-image.nix")
-    nixos-generators.nixosModules.all-formats
   ];
 
   # We need more temp space to build
   formatConfigs.amazon = { ... }: {
     amazonImage.sizeMB = 16 * 1024;
-  };
-
-  users.users.${config.defaultUser} = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
   };
 
   # This value determines the NixOS release from which the default

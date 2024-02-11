@@ -3,20 +3,15 @@
 {
   defaultUser = "nixos";
   graphicalSystem = true;
+  desktopSystem = true;
   nixpkgs.config.allowUnfree = true;
 
   imports = [
     nixos-wsl.nixosModules.wsl
   ];
 
-  users.users.${config.defaultUser} = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-  };
-
   wsl.enable = true;
   wsl.defaultUser = config.defaultUser;
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
