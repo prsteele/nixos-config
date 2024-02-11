@@ -1,7 +1,10 @@
-{ local-config, pkgs, ... }:
+{ nixos-config, pkgs, ... }:
 let
-  nonfree-packages =
-    if local-config.allowUnfree
+  nonfree = nixos-config.nixpkgs.config.allowUnfree;
+  graphical = nixos-config.graphicalSystem;
+
+  nonfree-graphical-packages =
+    if nonfree && graphical
     then with pkgs; [
       discord
       spotify
@@ -9,8 +12,13 @@ let
     ]
     else [ ];
 
+  nonfree-nongraphical-packages =
+    if nonfree
+    then with pkgs; [ ]
+    else [ ];
+
   graphical-packages =
-    if local-config.graphical
+    if graphical
     then with pkgs; [
       firefox
       inkscape
@@ -42,6 +50,7 @@ in
   home.packages = builtins.concatLists [
     non-graphical-packages
     graphical-packages
-    nonfree-packages
+    nonfree-graphical-packages
+    nonfree-nongraphical-packages
   ];
 }

@@ -1,9 +1,14 @@
-{ config, local-config, ... }:
+{ modulesPath, config, ... }:
 {
+  defaultUser = "prsteele";
+  graphicalSystem = false;
+  nixpkgs.config.allowUnfree = true;
+
   imports = [
+    (modulesPath + "/virtualisation/amazon-image.nix")
   ];
 
-  users.users.${local-config.user} = {
+  users.users.${config.defaultUser} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
   };

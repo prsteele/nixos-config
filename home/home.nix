@@ -1,15 +1,15 @@
-{ local-config, ... }:
+{ config, ... }:
 {
   home-manager.useGlobalPkgs = true;
-  home-manager.users.${local-config.user} =
+  home-manager.users.${config.defaultUser} =
     {
       imports = [
         ./packages.nix
         ./programs.nix
       ];
 
-      home.username = local-config.user;
-      home.homeDirectory = "/home/${local-config.user}";
+      home.username = config.defaultUser;
+      home.homeDirectory = "/home/${config.defaultUser}";
 
       home.sessionVariables = {
         EDITOR = "emacs";

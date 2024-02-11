@@ -19,57 +19,25 @@
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
 
-      mkNixos = machine: cfg:
-        let
-          # Propagate local-config (the only attribute of cfg) to
-          # NixOS and HM modules
-          specialArgs = inputs // cfg;
-        in
+      mkNixos = system: machine:
         nixpkgs.lib.nixosSystem {
-          system = cfg.local-config.system;
-          specialArgs = specialArgs;
+          system = system;
+          specialArgs = inputs;
           modules = [
-            machine
+            ./modules
             ./overlays
+            machine
             ./system
-            (import ./home specialArgs)
+            (import ./home inputs)
           ];
         };
     in
     {
       nixosConfigurations = {
-        wsl = mkNixos ./machines/wsl {
-          local-config = {
-            user = "nixos";
-            graphical = true;
-            allowUnfree = true;
-            system = "x86_64-linux";
-          };
-        };
-        thinkpad = mkNixos ./machines/thinkpad-e14 {
-          local-config = {
-            user = "prsteele";
-            graphical = true;
-            allowUnfree = true;
-            system = "x86_64-linux";
-          };
-        };
-        aws-x86_64 = mkNixos ./machines/aws {
-          local-config = {
-            user = "prsteele";
-            graphical = false;
-            allowUnfree = true;
-            system = "x86_64-linux";
-          };
-        };
-        aws-aarch64 = mkNixos ./machines/aws {
-          local-config = {
-            user = "prsteele";
-            graphical = false;
-            allowUnfree = true;
-            system = "aarch64-linux";
-          };
-        };
+        wsl = mkNixos "x86_64-linux" ./machines/wsl;
+        thinkpad = mkNixos "x86_64-linux" ./machines/thinkpad-e14;
+        aws-x86_64 = mkNixos "x86_64-linux" ./machines/aws;
+        aws-aarch64 = mkNixos "aarch64-linux" ./machines/aws;
       };
 
 
