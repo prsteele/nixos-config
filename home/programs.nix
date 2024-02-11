@@ -14,6 +14,11 @@
     };
   };
 
+  # This will only apply to standalone installs; when using HM via
+  # NixOS, HM is used as a submodule, and HM will decline to install
+  # itself.
+  programs.home-manager.enable = true;
+
   programs.tmux = {
     enable = true;
     prefix = "C-u";
