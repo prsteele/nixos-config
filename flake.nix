@@ -19,7 +19,7 @@
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
 
-      mkNixos = cfg: machine:
+      mkNixos = machine: cfg:
         let
           # Propagate local-config (the only attribute of cfg) to
           # NixOS and HM modules
@@ -40,9 +40,10 @@
             })
           ];
         };
-
-      configs = {
-        wsl = {
+    in
+    {
+      nixosConfigurations = {
+        wsl = mkNixos ./machines/wsl {
           local-config = {
             user = "nixos";
             graphical = true;
@@ -50,8 +51,7 @@
             system = "x86_64-linux";
           };
         };
-
-        thinkpad = {
+        thinkpad = mkNixos ./machines/thinkpad-e14 {
           local-config = {
             user = "prsteele";
             graphical = true;
@@ -59,14 +59,24 @@
             system = "x86_64-linux";
           };
         };
+        aws-x86_64 = mkNixos ./machines/aws {
+          local-config = {
+            user = "prsteele";
+            graphical = false;
+            allowUnfree = true;
+            system = "x86_64-linux";
+          };
+        };
+        aws-aarch64 = mkNixos ./machines/aws {
+          local-config = {
+            user = "prsteele";
+            graphical = false;
+            allowUnfree = true;
+            system = "aarch64-linux";
+          };
+        };
       };
 
-    in
-    {
-      nixosConfigurations = {
-        wsl = mkNixos configs.wsl ./machines/wsl;
-        thinkpad = mkNixos configs.thinkpad ./machines/thinkpad-e14;
-      };
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
     };
