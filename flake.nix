@@ -32,12 +32,7 @@
             machine
             ./overlays
             ./system
-            home-manager.nixosModules.default
-            (args: {
-              home-manager.useGlobalPkgs = true;
-              home-manager.extraSpecialArgs = specialArgs;
-              home-manager.users.${specialArgs.local-config.user} = import ./home args;
-            })
+            (import ./home specialArgs)
           ];
         };
     in
