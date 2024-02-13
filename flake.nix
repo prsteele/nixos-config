@@ -4,7 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-wsl = {
       url = "github:nix-community/nixos-wsl";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,17 +26,18 @@
     , nixos-generators
     , nixos-wsl
     , ...
-    }@inputs:
+    }:
     let
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
     in
     {
+      overlays = {
+        unstable-emacs = import ./overlays/unstable-emacs.nix { inherit nixpkgs-unstable; };
+      };
+
       nixosModules =
         let
-          # Since we define machine configuration as modules, we need to
-          # plumb flake inputs manually
           modules = ./modules;
-          overlays = import ./overlays { inherit nixpkgs-unstable; };
           system = import ./system { inherit nixos-generators; };
           home = import ./home { inherit home-manager; };
         in
@@ -41,30 +45,13 @@
           base = {
             imports = [
               modules
-              overlays
               system
               home
-            ];
-          };
-
-          wsl = {
-            imports = [
-              (import ./machines/wsl { inherit nixos-wsl; })
-              self.nixosModules.base
-            ];
-          };
-
-          thinkpad = {
-            imports = [
-              ./machines/thinkpad-e14
-              self.nixosModules.base
-            ];
-          };
-
-          aws = {
-            imports = [
-              ./machines/aws
-              self.nixosModules.base
+              {
+                nixpkgs.overlays = [
+                  self.overlays.unstable-emacs
+                ];
+              }
             ];
           };
         };
@@ -72,15 +59,24 @@
       nixosConfigurations = {
         wsl = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [ self.nixosModules.wsl ];
+          modules = [
+            (import ./machines/wsl { inherit nixos-wsl; })
+            self.nixosModules.base
+          ];
         };
         thinkpad = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [ self.nixosModules.thinkpad ];
+          modules = [
+            ./machines/thinkpad-e14
+            self.nixosModules.base
+          ];
         };
         aws = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [ self.nixosModules.aws ];
+          modules = [
+            ./machines/aws
+            self.nixosModules.base
+          ];
         };
       };
 
