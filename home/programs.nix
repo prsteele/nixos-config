@@ -53,5 +53,9 @@
           . ~/.zshrc-ad-hoc
       fi
     '';
+
+    shellAliases = {
+      gg = "git -P grep";
+    };
   };
 }
