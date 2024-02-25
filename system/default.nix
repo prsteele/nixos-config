@@ -5,7 +5,7 @@
     nixos-generators.nixosModules.all-formats
   ];
   fonts.packages = with pkgs; [
-    noto-fonts
+    (nerdfonts.override { fonts = [ "FiraCode" "Noto" ]; })
   ];
 
   environment.systemPackages = with pkgs; [
