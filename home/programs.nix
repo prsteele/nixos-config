@@ -30,7 +30,7 @@
 
     extraConfig = ''
       # Reload configuration
-      bind -N "Reload tmux configuration" R source-file "~/.config/tmux/tmux.conf"; display-message "reloaded configuration"
+      bind -N "Reload tmux configuration" R source-file "~/.config/tmux/tmux.conf" \; display-message "reloaded configuration"
 
       # Swap to the last window
       bind u last-window
