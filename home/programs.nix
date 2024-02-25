@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.direnv = {
     enable = true;
@@ -27,6 +27,9 @@
     historyLimit = 50000;
     keyMode = "emacs";
     mouse = true;
+    plugins = with pkgs.tmuxPlugins; [
+      monokai
+    ];
 
     extraConfig = ''
       # Reload configuration

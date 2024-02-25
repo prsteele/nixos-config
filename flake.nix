@@ -33,6 +33,7 @@
     {
       overlays = {
         unstable-emacs = import ./overlays/unstable-emacs.nix { inherit nixpkgs-unstable; };
+        tmux-monokai = import ./overlays/tmux-monokai.nix;
       };
 
       nixosModules =
@@ -50,6 +51,7 @@
               {
                 nixpkgs.overlays = [
                   self.overlays.unstable-emacs
+                  self.overlays.tmux-monokai
                 ];
               }
             ];
