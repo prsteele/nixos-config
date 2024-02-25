@@ -22,6 +22,33 @@
   programs.tmux = {
     enable = true;
     prefix = "C-u";
+    baseIndex = 1;
+    clock24 = true;
+    historyLimit = 50000;
+    keyMode = "emacs";
+    mouse = true;
+
+    extraConfig = ''
+      # Reload configuration
+      bind -N "Reload tmux configuration" R source-file "~/.config/tmux/tmux.conf"; display-message "reloaded configuration"
+
+      # Swap to the last window
+      bind u last-window
+
+      # Use the main-horizontal layout by default, and select them main pane when creating or destroying panes
+      set-hook -g after-split-window "select-layout main-horizontal; select-pane -t 1"
+      set-hook -g pane-exited "select-layout main-horizontal; select-pane -t 1"
+
+      # Add a new pane as the main pane
+      bind-key -N "Add a new pane, and rotate it to be active" ";" split-window -h -t -1 -c "#{pane_current_path}" \; rotate-window -D
+
+      # Open new windows in the directory of the current pane
+      bind-key -N "Create a new window" "c" new-window -c "#{pane_current_path}"
+
+      # Instead of moving between panes, just rotate them
+      bind-key -N "Rotate between panes" -r "o" rotate-window -U
+      bind-key -N "Rotate between panes" -r "i" rotate-window -D
+    '';
   };
 
   programs.zsh = {
