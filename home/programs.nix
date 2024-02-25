@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   programs.direnv = {
     enable = true;
@@ -72,7 +72,9 @@
         "git"
       ];
 
-      theme = "ys";
+      theme = "psteele";
+
+      custom = "${config.xdg.configHome}/oh-my-zsh-custom/";
     };
 
     initExtra = ''
@@ -83,6 +85,10 @@
           . ~/.zshrc-ad-hoc
       fi
     '';
+
+    sessionVariables = {
+      VIRTUAL_ENV_DISABLE_PROMPT = "1";
+    };
 
     shellAliases = {
       gg = "git -P grep";

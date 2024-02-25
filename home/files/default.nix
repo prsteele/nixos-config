@@ -1,4 +1,7 @@
 { ... }:
 {
-  imports = [ ./kitty ];
+  imports = [
+    ./kitty
+    ./oh-my-zsh
+  ];
 }
