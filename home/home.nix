@@ -6,6 +6,7 @@
       imports = [
         ./packages
         ./programs.nix
+        ./files
       ];
 
       home.username = config.defaultUser;
