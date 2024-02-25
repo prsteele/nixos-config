@@ -31,4 +31,6 @@
     extraGroups = [ "wheel" ];
     shell = pkgs.zsh;
   };
+
+  time.timeZone = "America/New_York";
 }
