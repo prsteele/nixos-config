@@ -11,6 +11,8 @@
     nil
     nixpkgs-fmt
     (python3.withPackages (ps: [ ps.pip ]))
+    (python3.pkgs.toPythonApplication python3.pkgs.python-lsp-server)
+    ruff
     tree
     unzip
     zip
