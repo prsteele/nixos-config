@@ -9,9 +9,6 @@
         ./files
       ];
 
-      home.username = config.defaultUser;
-      home.homeDirectory = "/home/${config.defaultUser}";
-
       home.sessionVariables = {
         EDITOR = "emacs";
         VISUAL = "emacs";

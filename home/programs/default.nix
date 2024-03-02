@@ -1,11 +1,11 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
   };
 
-  programs.git = {
+  programs.git = lib.mkDefault {
     enable = true;
     userName = "Patrick Steele";
     userEmail = "prsteele@proton.me";
