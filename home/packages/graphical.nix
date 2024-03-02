@@ -7,12 +7,13 @@ in
     with pkgs; [
       firefox
       inkscape
+      kitty
       ksshaskpass
       nixpkgs-fmt
       pavucontrol
+      protonvpn-gui
       pwvucontrol
       yakuake
-      protonvpn-gui
     ]
   );
 }
