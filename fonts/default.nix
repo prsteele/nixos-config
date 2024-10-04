@@ -11,6 +11,7 @@ let
 in
 {
   fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" "Hasklig" "Noto" ]; })
     fira-mono
     uiua386
     (nerdfonts.override { fonts = [ "FiraCode" "Noto" ]; })
