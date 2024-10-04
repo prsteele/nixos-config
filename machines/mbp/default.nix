@@ -1,4 +1,4 @@
-{ home-manager, nix-darwin, nixpkgs-darwin, ... }@inputs:
+{ home-manager-darwin, nix-darwin, nixpkgs-darwin, ... }@inputs:
 let
   user = "prsteele";
   system = "aarch64-darwin";
@@ -6,13 +6,15 @@ let
     imports = [
 
       # Defaults
-      self.nixosModules.base-all
+      self.nixosModules.base-config
+      self.nixosModules.base-home
+      self.nixosModules.base-nixos
 
       # Home manager
-      home-manager.darwinModules.home-manager
+      home-manager-darwin.darwinModules.home-manager
 
       # Fonts
-      ../../fonts/darwin.nix
+      ../../fonts
     ];
 
     graphicalSystem = false;
@@ -22,6 +24,8 @@ let
     # Use Darwin-specific packages
     nixpkgs.pkgs = nixpkgs-darwin.legacyPackages.${system};
 
+    nixpkgs.overlays = [ self.overlays.tmux-monokai ];
+
     services.nix-daemon.enable = true;
 
     users.users.${user} = {
@@ -30,6 +34,8 @@ let
       shell = pkgs.zsh;
     };
     home-manager.users.${user} = import ../../home;
+
+    system.stateVersion = 5;
   };
 in
 nix-darwin.lib.darwinSystem {

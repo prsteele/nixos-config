@@ -15,7 +15,7 @@ let
       home-manager.nixosModules.default
 
       # Fonts
-      ../../fonts/nixos.nix
+      ../../fonts
     ];
 
     nixpkgs.config.allowUnfree = true;

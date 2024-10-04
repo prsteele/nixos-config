@@ -9,6 +9,11 @@
       url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager-darwin = {
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
+
     nixos-wsl = {
       url = "github:nix-community/nixos-wsl";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,6 +24,7 @@
     };
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
   };
 
