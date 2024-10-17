@@ -4,7 +4,6 @@
     awscli2
     coreutils-full
     curl
-    emacs
     htop
     ispell
     jq
