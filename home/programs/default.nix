@@ -16,6 +16,7 @@
     userEmail = "prsteele@proton.me";
     extraConfig = {
       init.defaultBranch = "main";
+      rerere.enabled = true;
     };
   };
 
