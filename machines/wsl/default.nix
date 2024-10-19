@@ -7,7 +7,9 @@ let
       nixos-wsl.nixosModules.wsl
 
       # Defaults
-      self.nixosModules.base-all
+      self.nixosModules.base-home
+      self.nixosModules.base-nixos
+      self.nixosModules.base-overlays
 
       # Home manager
       home-manager.nixosModules.default
@@ -17,8 +19,6 @@ let
     ];
 
     nixpkgs.config.allowUnfree = true;
-    graphicalSystem = true;
-    desktopSystem = true;
     wsl.enable = true;
     wsl.defaultUser = user;
 
@@ -27,7 +27,7 @@ let
       extraGroups = [ "wheel" ];
       shell = pkgs.zsh;
     };
-    home-manager.users.${user} = import ../../home;
+    home-manager.users.${user} = import ./home.nix;
 
     programs.ssh.startAgent = true;
 

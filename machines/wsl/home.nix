@@ -1,8 +1,32 @@
+{ pkgs, ... }:
 {
   imports = [
-    ./programs
-    ./files
+    ../../home
   ];
+
+  home.packages = with pkgs;
+    let
+      my-python-lsp-server = python3.pkgs.toPythonApplication python3.pkgs.python-lsp-server;
+      my-python = python3.withPackages (ps: [ ps.pip ]);
+    in
+    [
+      awscli2
+      coreutils-full
+      curl
+      htop
+      ispell
+      jq
+      kitty
+      konsole
+      my-python
+      my-python-lsp-server
+      nil
+      nixpkgs-fmt
+      ruff
+      tree
+      unzip
+      zip
+    ];
 
   home.sessionVariables = {
     EDITOR = "emacs";
