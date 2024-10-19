@@ -33,7 +33,7 @@ let
       home = "/Users/${user}";
       shell = pkgs.zsh;
     };
-    home-manager.users.${user} = import ../../home;
+    home-manager.users.${user} = import ./home.nix;
 
     system.stateVersion = 5;
   };
