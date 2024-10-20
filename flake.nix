@@ -54,9 +54,6 @@
 
     in
     {
-      overlays = import ./overlays { inherit nixpkgs-unstable; };
-      nixosModules = import ./modules { inherit nixpkgs-unstable; };
-
       nixosConfigurations = {
         wsl = import ./machines/wsl inputs;
         thinkpad = import ./machines/thinkpad-e14 inputs;
@@ -76,7 +73,10 @@
             rebuild = pkgs.writeShellApplication
               {
                 name = "local-rebuild";
-                runtimeInputs = [ nix-darwin.packages.${system}.default ];
+                runtimeInputs =
+                  if isDarwin system
+                  then [ nix-darwin.packages.${system}.default ]
+                  else [ ];
                 text =
                   if isDarwin system
                   then ''darwin-rebuild switch --flake "$@"''

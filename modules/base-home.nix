@@ -1,5 +1,17 @@
-{ config, home-manager, lib, ... }:
+/* Typical Home Manager configuration */
+{ config, lib, ... }:
+with lib;
 {
-  home-manager.extraSpecialArgs = { nixos-config = config; };
-  home-manager.useGlobalPkgs = lib.mkDefault true;
+  options = {
+    prs.hm-base.enable = mkEnableOption "Home Manager base configuration";
+  };
+
+  config =
+    let
+      cfg = config.prs.hm-base;
+    in
+    mkIf cfg.enable {
+      home-manager.extraSpecialArgs = { nixos-config = config; };
+      home-manager.useGlobalPkgs = lib.mkDefault true;
+    };
 }
