@@ -11,6 +11,7 @@
     in
     [
       awscli2
+      cloudflared
       coreutils-full
       curl
       htop
