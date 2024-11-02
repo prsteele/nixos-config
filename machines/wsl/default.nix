@@ -21,7 +21,7 @@ nixpkgs.lib.nixosSystem {
       # User
       users.users.${user} = {
         isNormalUser = true;
-        extraGroups = [ "wheel" ];
+        extraGroups = [ "wheel" "podman" ];
         shell = pkgs.zsh;
       };
 
@@ -41,6 +41,17 @@ nixpkgs.lib.nixosSystem {
       };
       programs.ssh.startAgent = true;
       hardware.opengl.enable = true;
+
+      # Podman
+      virtualisation = {
+        containers.enable = true;
+
+        podman = {
+          enable = true;
+          dockerCompat = true;
+          defaultNetwork.settings.dns_enabled = true;
+        };
+      };
 
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
