@@ -13,4 +13,4 @@ CopyTextAsHTML=false
 MiddleClickPasteMode=0
 
 [Scrolling]
-HistoryMode=0
+HistoryMode=1
