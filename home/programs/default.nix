@@ -65,7 +65,7 @@
     clock24 = true;
     historyLimit = 50000;
     keyMode = "emacs";
-    mouse = true;
+    mouse = false;
     plugins = with pkgs.tmuxPlugins; [
       monokai
     ];
