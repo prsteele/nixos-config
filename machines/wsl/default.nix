@@ -28,6 +28,7 @@ nixpkgs.lib.nixosSystem {
       # WSL
       wsl.enable = true;
       wsl.defaultUser = user;
+      wsl.startMenuLaunchers = true;
 
       # HM
       home-manager.users.${user} = import ./home.nix;
