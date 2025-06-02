@@ -12,10 +12,10 @@ with lib;
     in
     mkIf cfg.enable {
       fonts.packages = with pkgs; [
-        (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" "Hasklig" "Noto" ]; })
+        nerd-fonts.fira-code
+        nerd-fonts.droid-sans-mono
+        nerd-fonts.noto
         fira-mono
-        (pkgs.callPackage ../pkgs/uiua386.nix { })
       ];
     };
 }
-

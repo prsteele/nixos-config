@@ -12,7 +12,7 @@ with lib;
     in
     mkIf cfg.enable {
       nix = mkDefault {
-        package = pkgs.nixFlakes;
+        package = pkgs.nixVersions.stable;
         extraOptions = "experimental-features = nix-command flakes";
       };
 
@@ -21,7 +21,5 @@ with lib;
       nixpkgs.config.allowUnfree = mkDefault true;
       documentation.enable = mkDefault true;
       documentation.man.enable = mkDefault true;
-      documentation.dev.enable = mkDefault true;
     };
 }
-

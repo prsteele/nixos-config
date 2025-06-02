@@ -83,7 +83,7 @@
       custom = "${config.xdg.configHome}/oh-my-zsh-custom/";
     };
 
-    initExtra = ''
+    initContent = ''
       unsetopt BEEP
       set bell-style none
 

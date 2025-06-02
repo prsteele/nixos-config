@@ -4,6 +4,6 @@ let
 in
 {
   home.file.${cabal} = {
-    source = ./config;
+    text = import ./config.nix config.xdg.configHome;
   };
 }
