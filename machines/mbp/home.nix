@@ -6,7 +6,6 @@
 
   home.packages = with pkgs;
     let
-      my-python-lsp-server = python3.pkgs.toPythonApplication python3.pkgs.python-lsp-server;
       my-python = python3.withPackages (ps: [ ps.pip ]);
     in
     [
@@ -17,7 +16,7 @@
       ispell
       jq
       my-python
-      my-python-lsp-server
+      basedpyright
       nil
       nixpkgs-fmt
       ruff
