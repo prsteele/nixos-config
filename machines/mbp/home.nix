@@ -10,15 +10,18 @@
     in
     [
       awscli2
+      basedpyright
+      choose
       coreutils-full
       curl
       htop
+      hyperfine
       ispell
       jq
       my-python
-      basedpyright
       nil
       nixpkgs-fmt
+      ripgrep
       ruff
       tree
       unzip

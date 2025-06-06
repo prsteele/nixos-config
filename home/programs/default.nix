@@ -22,6 +22,15 @@
     extraPackages = epkgs: with epkgs; [ treesit-grammars.with-all-grammars ];
   };
 
+  programs.fd = {
+    enable = true;
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.git = lib.mkDefault {
     enable = true;
     userName = "Patrick Steele";
@@ -36,6 +45,18 @@
   # NixOS, HM is used as a submodule, and HM will decline to install
   # itself.
   programs.home-manager.enable = true;
+
+  programs.lsd = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      layout = "tree";
+      recursion = {
+        enabled = true;
+        depth = 2;
+      };
+    };
+  };
 
   programs.tmux = {
     enable = true;
@@ -102,6 +123,8 @@
       if [ -f ~/.zshrc-ad-hoc ]; then
           . ~/.zshrc-ad-hoc
       fi
+
+      export FZF_CTRL_R_OPTS=""
     '';
 
     sessionVariables = {
