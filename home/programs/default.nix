@@ -1,5 +1,17 @@
 { config, lib, pkgs, ... }:
 {
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      filter_mode = "directory";
+      invert = true;
+      style = "full";
+      enter_accept = true;
+      inline_height = 0;
+    };
+  };
+
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
