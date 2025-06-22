@@ -23,8 +23,8 @@
       my-python-lsp-server
       nil
       nixpkgs-fmt
-      podman-compose
       pgformatter
+      podman-compose
       ruff
       tree
       unzip
