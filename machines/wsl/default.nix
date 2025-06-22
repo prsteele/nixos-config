@@ -41,7 +41,7 @@ nixpkgs.lib.nixosSystem {
         fonts.enable = true;
       };
       programs.ssh.startAgent = true;
-      hardware.opengl.enable = true;
+      hardware.graphics.enable = true;
 
       # Podman
       virtualisation = {

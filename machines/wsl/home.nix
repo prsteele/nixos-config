@@ -18,7 +18,7 @@
       ispell
       jq
       kitty
-      konsole
+      kdePackages.konsole
       my-python
       my-python-lsp-server
       nil
