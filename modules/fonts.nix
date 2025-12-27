@@ -16,6 +16,7 @@ with lib;
         nerd-fonts.droid-sans-mono
         nerd-fonts.noto
         fira-mono
+        uiua386
       ];
     };
 }
