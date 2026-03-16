@@ -33,9 +33,9 @@
 
   programs.git = lib.mkDefault {
     enable = true;
-    userName = "Patrick Steele";
-    userEmail = "prsteele@proton.me";
-    extraConfig = {
+    settings = {
+      user.email = "prsteele@proton.me";
+      user.name = "Patrick Steele";
       init.defaultBranch = "main";
       rerere.enabled = true;
     };

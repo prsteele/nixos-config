@@ -7,14 +7,20 @@ nix-darwin.lib.darwinSystem {
   inherit system;
   specialArgs = inputs;
   modules = [
-    ({ pkgs, self, ... }: {
+    ({ pkgs, self, config, ... }: {
       imports = [
-        # Defaults
-        ../../modules
-
         # Home manager
         home-manager-darwin.darwinModules.home-manager
+
+        ../../modules/tmux-monokai-theme.nix
       ];
+
+      nix = {
+        extraOptions = "experimental-features = nix-command flakes";
+      };
+
+      # Use Darwin-specific packages
+      nixpkgs.pkgs = nixpkgs-darwin.legacyPackages.${system};
 
       # User
       users.users.${user} = {
@@ -24,17 +30,31 @@ nix-darwin.lib.darwinSystem {
       };
 
       # HM
-      home-manager.users.${user} = import ./home.nix;
+      home-manager = {
+        extraSpecialArgs = { nixos-config = config; };
+        useGlobalPkgs = true;
+
+        users.${user} = import ./home.nix;
+      };
 
       # Local config
       prs = {
         tmux-monokai-theme.enable = true;
-        hm-base.enable = true;
-        nixos-base.enable = true;
-        fonts.enable = true;
       };
-      nixpkgs.pkgs = nixpkgs-darwin.legacyPackages.${system}; # Use Darwin-specific packages
-      services.nix-daemon.enable = true;
+
+      # Fonts
+      fonts.packages = with pkgs; [
+        nerd-fonts.fira-code
+        nerd-fonts.droid-sans-mono
+        nerd-fonts.noto
+        nerd-fonts.victor-mono
+        fira-mono
+        uiua386
+        victor-mono
+      ];
+
+      # Mac cruft
+      ids.gids.nixbld = 30000;
 
       system.stateVersion = 5;
     })
