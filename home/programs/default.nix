@@ -27,7 +27,7 @@
   };
 
   programs.fzf = {
-    enable = true;
+    enable = false;
     enableZshIntegration = true;
   };
 
@@ -47,12 +47,12 @@
   programs.home-manager.enable = true;
 
   programs.lsd = {
-    enable = true;
+    enable = false;
     enableZshIntegration = true;
     settings = {
       layout = "tree";
       recursion = {
-        enabled = true;
+        enabled = false;
         depth = 2;
       };
     };
