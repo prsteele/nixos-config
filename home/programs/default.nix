@@ -1,16 +1,43 @@
 { config, lib, pkgs, ... }:
 {
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      filter_mode = "directory";
+      invert = true;
+      style = "full";
+      enter_accept = true;
+      inline_height = 0;
+    };
+  };
+
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
   };
 
+  programs.emacs = {
+    enable = true;
+    extraPackages = epkgs: with epkgs; [ treesit-grammars.with-all-grammars ];
+  };
+
+  programs.fd = {
+    enable = true;
+  };
+
+  programs.fzf = {
+    enable = false;
+    enableZshIntegration = true;
+  };
+
   programs.git = lib.mkDefault {
     enable = true;
-    userName = "Patrick Steele";
-    userEmail = "prsteele@proton.me";
-    extraConfig = {
+    settings = {
+      user.email = "prsteele@proton.me";
+      user.name = "Patrick Steele";
       init.defaultBranch = "main";
+      rerere.enabled = true;
     };
   };
 
@@ -19,6 +46,18 @@
   # itself.
   programs.home-manager.enable = true;
 
+  programs.lsd = {
+    enable = false;
+    enableZshIntegration = true;
+    settings = {
+      layout = "tree";
+      recursion = {
+        enabled = false;
+        depth = 2;
+      };
+    };
+  };
+
   programs.tmux = {
     enable = true;
     prefix = "C-u";
@@ -26,7 +65,7 @@
     clock24 = true;
     historyLimit = 50000;
     keyMode = "emacs";
-    mouse = true;
+    mouse = false;
     plugins = with pkgs.tmuxPlugins; [
       monokai
     ];
@@ -77,13 +116,15 @@
       custom = "${config.xdg.configHome}/oh-my-zsh-custom/";
     };
 
-    initExtra = ''
+    initContent = ''
       unsetopt BEEP
       set bell-style none
 
       if [ -f ~/.zshrc-ad-hoc ]; then
           . ~/.zshrc-ad-hoc
       fi
+
+      export FZF_CTRL_R_OPTS=""
     '';
 
     sessionVariables = {

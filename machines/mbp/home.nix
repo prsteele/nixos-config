@@ -1,8 +1,32 @@
+{ pkgs, ... }:
 {
   imports = [
-    ./programs
-    ./files
+    ../../home
   ];
+
+  home.packages = with pkgs;
+    let
+      my-python = python3.withPackages (ps: [ ps.pip ]);
+    in
+    [
+      awscli2
+      basedpyright
+      choose
+      coreutils-full
+      curl
+      htop
+      hyperfine
+      ispell
+      jq
+      my-python
+      nil
+      nixpkgs-fmt
+      ripgrep
+      ruff
+      tree
+      unzip
+      zip
+    ];
 
   home.sessionVariables = {
     EDITOR = "emacs";

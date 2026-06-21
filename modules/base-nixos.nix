@@ -1,11 +1,25 @@
-# Nixos options that should be applicable to any host
-{ lib, pkgs, ... }:
+/* Typical NixOS configuration */
+{ config, lib, pkgs, ... }:
+with lib;
 {
-  nix = lib.mkDefault {
-    package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
+  options = {
+    prs.nixos-base.enable = mkEnableOption "NixOS base configuration";
   };
 
-  programs.zsh.enable = lib.mkDefault true;
-  time.timeZone = lib.mkDefault "America/New_York";
+  config =
+    let
+      cfg = config.prs.nixos-base;
+    in
+    mkIf cfg.enable {
+      nix = mkDefault {
+        package = pkgs.nixVersions.stable;
+        extraOptions = "experimental-features = nix-command flakes";
+      };
+
+      programs.zsh.enable = mkDefault true;
+      time.timeZone = mkDefault "America/New_York";
+      nixpkgs.config.allowUnfree = mkDefault true;
+      documentation.enable = mkDefault true;
+      documentation.man.enable = mkDefault true;
+    };
 }

@@ -16,7 +16,7 @@ let
       home-manager.nixosModules.default
 
       # Fonts
-      ../../fonts/nixos.nix
+      ../../fonts
     ];
 
     users.users.${user} = {
