@@ -6,7 +6,7 @@ nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
   specialArgs = inputs;
   modules = [
-    ({ home-manager, nixos-wsl, pkgs, ... }: {
+    ({ self, home-manager, nixos-wsl, pkgs, ... }: {
       imports = [
         # WSL
         nixos-wsl.nixosModules.wsl
@@ -17,6 +17,13 @@ nixpkgs.lib.nixosSystem {
         # Home manager
         home-manager.nixosModules.default
       ];
+
+      nixpkgs = {
+        overlays = [
+          self.overlays.emacs-packages
+          self.overlays.my-emacs
+        ];
+      };
 
       # User
       users.users.${user} = {

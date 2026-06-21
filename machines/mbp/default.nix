@@ -20,7 +20,13 @@ nix-darwin.lib.darwinSystem {
       };
 
       # Use Darwin-specific packages
-      nixpkgs.pkgs = nixpkgs-darwin.legacyPackages.${system};
+      nixpkgs = {
+        pkgs = import nixpkgs-darwin { inherit system; };
+        overlays = [
+          self.overlays.emacs-packages
+          self.overlays.my-emacs
+        ];
+      };
 
       # User
       users.users.${user} = {
@@ -51,6 +57,13 @@ nix-darwin.lib.darwinSystem {
         fira-mono
         uiua386
         victor-mono
+      ];
+
+      # System packages
+      #
+      # Derivations exposing Mac applications should go here to show up in "Apps"
+      environment.systemPackages = [
+        pkgs.my-emacs
       ];
 
       # Mac cruft

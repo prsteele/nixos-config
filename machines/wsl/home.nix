@@ -31,6 +31,11 @@
       zip
     ];
 
+  home.programs.emacs = {
+    enable = true;
+    package = pkgs.my-emacs;
+  };
+
   home.sessionVariables = {
     EDITOR = "emacs";
     VISUAL = "emacs";

@@ -17,11 +17,6 @@
     enableZshIntegration = true;
   };
 
-  programs.emacs = {
-    enable = true;
-    extraPackages = epkgs: with epkgs; [ treesit-grammars.with-all-grammars ];
-  };
-
   programs.fd = {
     enable = true;
   };

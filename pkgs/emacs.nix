@@ -1,0 +1,40 @@
+{ emacsPackagesFor
+, emacs
+}:
+(emacsPackagesFor emacs).emacsWithPackages (epkgs: with epkgs; [
+  ace-jump-mode
+  breadcrumb
+  catppuccin-theme
+  consult
+  corfu
+  direnv
+  docker-compose-mode
+  eldoc-box
+  embark
+  embark-consult
+  exec-path-from-shell
+  f
+  flycheck
+  haskell-mode
+  j-mode
+  keychain-environment
+  lean4-mode
+  magit
+  marginalia
+  markdown-mode
+  nix-mode
+  orderless
+  proof-general
+  python-mode
+  rainbow-delimiters
+  rainbow-identifiers
+  reformatter
+  rust-mode
+  s
+  smart-mode-line
+  treesit-grammars.with-all-grammars
+  uiua-ts-mode
+  vertico
+  which-key
+  whitespace-cleanup-mode
+])

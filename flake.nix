@@ -36,22 +36,21 @@
     };
 
     # Known systems
-    systems = {
-      url = "github:nix-systems/default";
-    };
+    systems.url = "github:nix-systems/default";
   };
 
   outputs = { self, nixpkgs, nixpkgs-darwin, nixpkgs-unstable, nix-darwin, systems, ... }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs (import systems);
-
       isDarwin = system: [ ] == builtins.match ".*-darwin" system;
-
       mkPkgs = system:
-        if isDarwin system
-        then nixpkgs-darwin.legacyPackages.${system}
-        else nixpkgs.legacyPackages.${system};
-
+        (if isDarwin system then import nixpkgs-darwin else import nixpkgs) {
+          inherit system;
+          overlays = [
+            self.overlays.emacs-packages
+            self.overlays.my-emacs
+          ];
+        };
     in
     {
       nixosConfigurations = {
@@ -72,7 +71,7 @@
           {
             rebuild = pkgs.writeShellApplication
               {
-                name = "local-rebuild";
+                name = "rebuild";
                 runtimeInputs =
                   if isDarwin system
                   then [ nix-darwin.packages.${system}.default ]
@@ -84,6 +83,11 @@
               };
 
             aws-ami = self.nixosConfigurations.aws.config.formats.amazon;
+
+            inherit (pkgs) my-emacs;
+            inherit (pkgs.emacsPackages)
+              ace-jump-mode
+              lean4-mode;
           });
 
       formatter = forAllSystems (system:
@@ -92,5 +96,13 @@
         in
         pkgs.nixpkgs-fmt
       );
+
+      overlays = {
+        my-emacs = final: prev: {
+          my-emacs = final.callPackage ./pkgs/emacs.nix { };
+        };
+
+        emacs-packages = import ./overlays/emacs-packages.nix;
+      };
     };
 }
